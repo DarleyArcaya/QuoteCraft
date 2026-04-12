@@ -138,7 +138,9 @@ def SettingsView(page: ft.Page):
             allowed_extensions=["db"],
         )
 
-    def process_picker_result(res: ft.FilePickerResultEvent):
+    # Process file picker result — type annotation removed for flet build compatibility
+    # Procesa el resultado del selector de archivos — anotación de tipo removida para compatibilidad con flet build
+    def process_picker_result(res):
         if not res.files:
             restore_label.value = i18n.t("no_file")
             page.update()
