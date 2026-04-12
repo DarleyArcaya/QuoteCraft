@@ -1,0 +1,4 @@
+# you must install these requierments
+
+flet
+fpdf
