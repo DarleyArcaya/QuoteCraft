@@ -76,7 +76,6 @@
 * `flet.yaml`: Configuration file for the Flet application.
 * `LICENSE`: Legal terms for the use of this software.
 * `CHANGELOG.md`: History of updates and new features added.
-* `build_app.bat`: Script to automate the building process.
 * `.gitignore`: Tells Git which files to ignore (like venv or local backups).
 
 ## Why QuoteCraft?
