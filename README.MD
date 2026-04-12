@@ -84,7 +84,7 @@ I built this tool to bridge the gap between complex accounting software and simp
 
 ## Connect with me
 
-* **LinkedIn:** [Insert your link here]
+* **LinkedIn:** [[Click HERE](https://www.linkedin.com/in/darley-s-0544262a1?utm_source=share_via&utm_content=profile&utm_medium=member_ios)]
 
 ## Author
 
