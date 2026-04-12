@@ -8,12 +8,17 @@ import os
 # Reference to the project root (used in development) | Referencia a la raíz del proyecto (usada en desarrollo)
 _dev_path = pl.Path(__file__).resolve().parent.parent
 
-# If running as a PyInstaller .exe OR the project root doesn't exist (flet build),
-# save data in the user's AppData folder (persistent across app restarts).
-# Si es un .exe de PyInstaller O la raíz del proyecto no existe (flet build),
-# guardamos en AppData del usuario (persiste entre reinicios de la app).
-if getattr(sys, 'frozen', False) or not (_dev_path / "main.py").exists():
-    BASE_DIR = pl.Path(os.environ["APPDATA"]) / "QuoteCraft"
+# Persistent data directory in AppData | Directorio de datos persistente en AppData
+_appdata_dir = pl.Path(os.environ["APPDATA"]) / "QuoteCraft"
+
+# Detect if running from flet build extracted app in AppData
+# Detecta si se ejecuta desde la app extraída por flet build en AppData
+_is_flet_build = str(_dev_path).lower().startswith(os.environ["APPDATA"].lower())
+
+# If PyInstaller .exe, flet build, or any AppData execution → use persistent AppData folder
+# Si es .exe de PyInstaller, flet build, o cualquier ejecución desde AppData → usar carpeta persistente
+if getattr(sys, 'frozen', False) or _is_flet_build:
+    BASE_DIR = _appdata_dir
 else:
     # In development, save inside the project folder | En desarrollo, guardamos dentro de la carpeta del proyecto
     BASE_DIR = _dev_path
