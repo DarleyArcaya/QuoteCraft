@@ -18,7 +18,6 @@ database/*.db
 backups/
 
 # --- DOCKER ---
-# We ignore temporary layers, but NOT the Dockerfile
 .dockerignore
 docker-stack.yml
 
@@ -32,6 +31,9 @@ estimate/
 *.spec
 *.exe
 .flet_config.toml
+# Agregado para ignorar el script de compilación local
+build_app.bat
+*.bat
 
 # --- IDEs & SYSTEM ---
 .vscode/
