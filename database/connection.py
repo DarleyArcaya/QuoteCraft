@@ -4,31 +4,41 @@ import pathlib as pl
 import os
 
 # --- PERMANENT PATH LOGIC | LÓGICA DE RUTA PERMANENTE ---
-# If running as .exe, we save in User's AppData (won't be deleted on close) 
-# Si es el .exe, guardamos en AppData del usuario (no se borra al cerrar)
-if getattr(sys, 'frozen', False):
+
+# Reference to the project root (used in development) | Referencia a la raíz del proyecto (usada en desarrollo)
+_dev_path = pl.Path(__file__).resolve().parent.parent
+
+# If running as a PyInstaller .exe OR the project root doesn't exist (flet build),
+# save data in the user's AppData folder (persistent across app restarts).
+# Si es un .exe de PyInstaller O la raíz del proyecto no existe (flet build),
+# guardamos en AppData del usuario (persiste entre reinicios de la app).
+if getattr(sys, 'frozen', False) or not (_dev_path / "main.py").exists():
     BASE_DIR = pl.Path(os.environ["APPDATA"]) / "QuoteCraft"
 else:
-    # In development, save in the project folder | Si es desarrollo, guardamos en la carpeta del proyecto
-    BASE_DIR = pl.Path(__file__).resolve().parent.parent
+    # In development, save inside the project folder | En desarrollo, guardamos dentro de la carpeta del proyecto
+    BASE_DIR = _dev_path
 
 # Set the database path | Establece la ruta de la base de datos
 DB_PATH = BASE_DIR / 'data' / 'estimate.db'
-# Create the folder if it doesn't exist | Crea la carpeta si no existe
+
+# Create the data folder if it doesn't exist | Crea la carpeta de datos si no existe
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-def dict_factory(cursor, row): 
+
+def dict_factory(cursor, row):
     # Converts database rows into Python dictionaries | Convierte las filas de la DB en diccionarios de Python
     return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
 
-def get_connection(): 
+
+def get_connection():
     # Establishes connection to SQLite | Establece la conexión con SQLite
     conn = sql.connect(DB_PATH)
-    conn.row_factory = dict_factory # Enable dictionary mode | Habilita el modo de diccionario
-    conn.execute('PRAGMA foreign_keys = ON') # Enable foreign key support | Habilita soporte para claves foráneas
+    conn.row_factory = dict_factory  # Enable dictionary mode | Habilita el modo de diccionario
+    conn.execute('PRAGMA foreign_keys = ON')  # Enable foreign key support | Habilita soporte para claves foráneas
     return conn
 
-def create_tables(): 
+
+def create_tables():
     # Create all necessary tables for the app | Crea todas las tablas necesarias para la app
     conn = get_connection()
     cursor = conn.cursor()
@@ -145,6 +155,7 @@ def create_tables():
 
     conn.commit()
     conn.close()
+
 
 # --- PERSISTENCE FUNCTIONS | FUNCIONES DE PERSISTENCIA ---
 
