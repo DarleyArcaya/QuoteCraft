@@ -139,7 +139,7 @@ def HomeView(page: ft.Page):
             dlg_confirm = ft.AlertDialog(
                 title=ft.Text(i18n.t("delete_title")),
                 content=ft.Column([
-                    ft.Text(i18n.t("delete_estimate_msg").format(num=estimate['estimate_number']), 
+                    ft.Text(i18n.t("delete_estimate_msg").format(num=estimate['estimate_number']),
                             size=13, color=t["text2"]),
                     confirm_field,
                 ], spacing=12, tight=True),
@@ -149,7 +149,7 @@ def HomeView(page: ft.Page):
                 ],
             )
             page.overlay.append(dlg_confirm)
-            confirm_field.focus() # Focus for better UX | Enfoque para mejor UX
+            confirm_field.focus()  # Focus for better UX | Enfoque para mejor UX
             dlg_confirm.open = True
             page.update()
 
@@ -199,9 +199,9 @@ def HomeView(page: ft.Page):
             dlg = ft.AlertDialog(
                 title=ft.Text(i18n.t("change_status")),
                 content=ft.Column([
-                    ft.TextButton(i18n.t("status_draft"),   on_click=lambda e: set_status("draft")),
-                    ft.TextButton(i18n.t("status_sent"),    on_click=lambda e: set_status("sent")),
-                    ft.TextButton(i18n.t("status_accepted"),   on_click=lambda e: set_status("accepted")),
+                    ft.TextButton(i18n.t("status_draft"),    on_click=lambda e: set_status("draft")),
+                    ft.TextButton(i18n.t("status_sent"),     on_click=lambda e: set_status("sent")),
+                    ft.TextButton(i18n.t("status_accepted"), on_click=lambda e: set_status("accepted")),
                     ft.TextButton(i18n.t("status_rejected"), on_click=lambda e: set_status("rejected")),
                 ], tight=True, spacing=4),
                 actions=[ft.TextButton(i18n.t("cancel"), on_click=cancel)],
