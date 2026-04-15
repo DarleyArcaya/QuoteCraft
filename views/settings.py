@@ -236,7 +236,7 @@ def SettingsView(page: ft.Page):
                 # App Info | Información de la App
                 ft.Text(i18n.t("about"), size=11, color=t["text2"], weight=ft.FontWeight.W_600),
                 ft.Text("QuoteCraft", size=20, weight=ft.FontWeight.BOLD, color=t["accent"]),
-                ft.Text(f"{i18n.t('version')} 1.0.0", size=13, color=t["text2"]),
+                ft.Text(f"{i18n.t('version')} 1.0.5", size=13, color=t["text2"]),
                 ft.Text(f"{i18n.t('developed_by')} Darley Silot Arcaya", size=12, color=t["text3"]),
             ],
             scroll=ft.ScrollMode.AUTO,
