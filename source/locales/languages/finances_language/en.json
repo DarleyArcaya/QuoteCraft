@@ -1,0 +1,16 @@
+{
+    "title": "FINANCIAL REPORT",
+    "fiscal_year": "Fiscal Year:",
+    "company": "Company:",
+    "summary": "SUMMARY",
+    "total_income": "Total Income:",
+    "total_expenses": "Total Expenses:",
+    "net_income": "Net Income:",
+    "deductions": "Potential Deductions:",
+    "income": "INCOME",
+    "expenses": "EXPENSES / DEDUCTIONS",
+    "desc": "Description",
+    "date": "Date",
+    "amount": "Amount",
+    "footer": "Generated with QuoteCraft - for reference only, consult your accountant."
+}
