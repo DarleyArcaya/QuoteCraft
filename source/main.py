@@ -18,7 +18,7 @@ import threading
 # Ensures Windows recognizes the app for taskbar grouping | Asegura que Windows reconozca la app para agruparla en la barra de tareas.
 if os.name == 'nt':
     try:
-        myappid = 'Darley.QuoteCraft.App.v1.1.1' 
+        myappid = 'Darley.QuoteCraft.App.v1.1.2' 
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     except Exception:
         pass
@@ -27,7 +27,7 @@ if os.name == 'nt':
 # checker can compare it against the latest version in GitHub's version.json.
 # [CAMBIO] Versión actual de la app — actualizar este string con cada release para
 # que el checker pueda compararlo contra la última versión en version.json de GitHub.
-CURRENT_VERSION = "1.1.1"
+CURRENT_VERSION = "1.1.2"
 
 # [CHANGE] URL to the raw version.json file hosted on GitHub.
 # This file only contains the latest version number and the Mega download link.
