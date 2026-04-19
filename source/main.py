@@ -35,7 +35,7 @@ CURRENT_VERSION = "1.1.1"
 # [CAMBIO] URL al archivo version.json alojado en GitHub (raw).
 # Este archivo solo contiene el número de versión más reciente y el link de descarga en Mega.
 # Actualiza version.json en GitHub cuando publiques un nuevo release — nunca subas el .exe aquí.
-VERSION_URL = "https://raw.githubusercontent.com/tuusuario/QuoteCraft/main/version.json"
+VERSION_URL = "https://github.com/DarleyArcaya/QuoteCraft/blob/main/version.json"
 
 def check_for_updates(page: ft.Page):
     """
