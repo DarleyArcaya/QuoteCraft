@@ -1,0 +1,15 @@
+[tool.flet]
+org = "com.tuempresa"
+product = "QuoteCraft"
+company = "Darley Silot Arcaya"
+
+[tool.flet.app]
+exclude = ["data", "backups"]
+
+[tool.flet.compile]
+app = true
+packages = true
+
+[tool.flet.cleanup]
+app = true
+packages = true
