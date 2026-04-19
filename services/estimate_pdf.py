@@ -45,6 +45,47 @@ def generate_pdf(estimate_id, lang=None):
     pdf.set_margins(15, 15, 15)
     pdf.set_auto_page_break(auto=True, margin=15)
 
+    # ─────────────────────────────────────────────────────────────────
+    # [CHANGE] LOGO HEADER — Fetch logo path from DB and render it in
+    # the top-right corner using fpdf v1 compatible pdf.image() call.
+    # h=0 makes fpdf auto-calculate height preserving the aspect ratio.
+    # If no logo is saved or the file is missing, rendering continues
+    # normally with no error.
+    #
+    # [CAMBIO] ENCABEZADO CON LOGO — Obtiene la ruta del logo desde la
+    # DB y lo renderiza en la esquina superior derecha usando la llamada
+    # pdf.image() compatible con fpdf v1.
+    # h=0 hace que fpdf calcule la altura automáticamente preservando
+    # la proporción. Si no hay logo guardado o falta el archivo, el
+    # renderizado continúa normalmente sin error.
+    # ─────────────────────────────────────────────────────────────────
+
+    # Fetch logo path from DB | Obtener la ruta del logo desde la DB
+    logo_path = queries.get_logo_path()
+
+    # Validate: path must exist and be PNG or JPG (fpdf v1 supported formats)
+    # Validar: la ruta debe existir y ser PNG o JPG (formatos soportados por fpdf v1)
+    logo_valid = (
+        logo_path is not None
+        and Path(logo_path).exists()
+        and Path(logo_path).suffix.lower() in (".png", ".jpg", ".jpeg")
+    )
+
+    # Logo position and width | Posición y ancho del logo
+    LOGO_W = 35   # width in mm | ancho en mm
+    LOGO_X = 158  # X position — right side | posición X — lado derecho
+    LOGO_Y = 10  # Y position — aligned with title | posición Y — alineado con el título
+
+    if logo_valid:
+        try:
+            # h=0 → fpdf auto-calculates height preserving aspect ratio
+            # h=0 → fpdf calcula la altura automáticamente preservando la proporción
+            pdf.image(logo_path, x=LOGO_X, y=LOGO_Y, w=LOGO_W, h=0)
+        except Exception as ex:
+            # If image fails for any reason, continue without it
+            # Si la imagen falla por cualquier razón, continuar sin ella
+            print(f"[QuoteCraft] Logo render error: {ex}")
+
     # --- HEADER SECTION | SECCIÓN DE ENCABEZADO ---
     pdf.set_font("Helvetica", "B", 24)
     pdf.set_text_color(240, 165, 0) # QuoteCraft Orange | Naranja QuoteCraft
@@ -145,7 +186,7 @@ def generate_pdf(estimate_id, lang=None):
         pdf.cell(75, 7, str(item["description"] or "").encode('latin-1', 'replace').decode('latin-1'), border=1, fill=fill)
         pdf.cell(15, 7, str(item["quantity"] or ""),    border=1, fill=fill, align="C")
         pdf.cell(20, 7, str(item["unit"] or "").encode('latin-1', 'replace').decode('latin-1'),         border=1, fill=fill, align="C")
-        pdf.cell(25, 7, f"${subtotal_item:,.2f}",             border=1, fill=fill, align="R")
+        pdf.cell(25, 7, f"${subtotal_item:,.2f}",       border=1, fill=fill, align="R")
         pdf.ln()
         fill = not fill
 

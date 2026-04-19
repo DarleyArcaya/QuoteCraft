@@ -123,6 +123,29 @@ def get_lang_preference():
         return user["lang"]
     return "es"
 
+# [CHANGE] Save the company logo path to the database (users table, id=1)
+# Allows SettingsView to persist the selected logo path without rewriting the full user record.
+# [CAMBIO] Guarda la ruta del logo de la empresa en la base de datos (tabla users, id=1)
+# Permite que SettingsView persista la ruta del logo sin reescribir el registro completo del usuario.
+def save_logo_path(path):
+    conn = get_connection()
+    conn.execute("UPDATE users SET logo_path = ? WHERE id = 1", (path,))
+    conn.commit()
+    conn.close()
+
+# [CHANGE] Retrieves the saved company logo path from the database (users table, id=1)
+# Returns None if no logo has been saved yet or if an error occurs.
+# [CAMBIO] Recupera la ruta del logo guardada en la base de datos (tabla users, id=1)
+# Retorna None si no se ha guardado ningún logo aún o si ocurre un error.
+def get_logo_path():
+    try:
+        conn = get_connection()
+        user = conn.execute("SELECT logo_path FROM users WHERE id = 1").fetchone()
+        conn.close()
+        return user["logo_path"] if user and user["logo_path"] else None
+    except:
+        return None
+
 # ─────────────────────────────
 # ESTIMATES | PRESUPUESTOS
 # ─────────────────────────────

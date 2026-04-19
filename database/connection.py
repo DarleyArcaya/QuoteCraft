@@ -148,6 +148,8 @@ def create_tables():
     except: pass
     try: conn.execute("ALTER TABLE users ADD COLUMN lang TEXT DEFAULT 'es'")
     except: pass
+    try: conn.execute("ALTER TABLE users ADD COLUMN logo_path TEXT") # Add logo_path to users | Añade logo_path a users
+    except: pass
     try: conn.execute("ALTER TABLE events ADD COLUMN time TEXT DEFAULT ''")
     except: pass
     try: conn.execute("ALTER TABLE items ADD COLUMN language TEXT DEFAULT 'es'")
@@ -156,7 +158,7 @@ def create_tables():
     # Ensure at least one admin user exists for settings | Asegura que exista al menos un usuario admin para ajustes
     user_exists = conn.execute("SELECT id FROM users WHERE id = 1").fetchone()
     if not user_exists:
-        conn.execute("INSERT INTO users (id, name, lang, theme) VALUES (1, 'Admin', 'es', 'dark')")
+        conn.execute("INSERT INTO users (id, name, lang, theme) VALUES (1, '', 'es', 'dark')")
 
     conn.commit()
     conn.close()
@@ -180,3 +182,20 @@ def save_user_language(lang):
     conn.execute("UPDATE users SET lang = ? WHERE id = 1", (lang,))
     conn.commit()
     conn.close()
+
+def save_logo_path(path):
+    """Saves the company logo path to the database | Guarda la ruta del logo de la empresa en la base de datos"""
+    conn = get_connection()
+    conn.execute("UPDATE users SET logo_path = ? WHERE id = 1", (path,))
+    conn.commit()
+    conn.close()
+
+def get_logo_path():
+    """Retrieves the saved company logo path | Recupera la ruta guardada del logo de la empresa"""
+    try:
+        conn = get_connection()
+        user = conn.execute("SELECT logo_path FROM users WHERE id = 1").fetchone()
+        conn.close()
+        return user['logo_path'] if user else None
+    except:
+        return None

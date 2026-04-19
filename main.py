@@ -11,7 +11,7 @@ import sys
 # Ensures Windows recognizes the app for taskbar grouping | Asegura que Windows reconozca la app para agruparla en la barra de tareas.
 if os.name == 'nt':
     try:
-        myappid = 'Darley.QuoteCraft.App.v1.0.3' 
+        myappid = 'Darley.QuoteCraft.App.v1.1.0' 
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     except Exception:
         pass

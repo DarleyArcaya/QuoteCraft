@@ -1,6 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.1.0] - 2026-04-18
+
+### Added
+- **Company logo on quotes**: Users can now add their company logo in settings, which will always appear in the generated PDF files.
+- **Setting / Save Data button**: Now the button save located in the settings page is on the top right corner.
+
+### Fixed
+
+- Fixed a bug that caused the app to crash
+- fixed a bug that do not let the app translate from english to spanish correctly.
+- In Settings / Company Names field, the word "Admin" will no longer appear for new users; the field will appear empty.
+
+## Old Version
+
 
 ## [1.0.3] - 2026-04-11
 
@@ -18,4 +32,4 @@ All notable changes to this project will be documented in this file.
 ### Technical Details
 - Built with **Python** and **Flet** for cross-platform UI.
 - Local storage using **SQLite**.
-- PDF styling and generation via **ReportLab**.
+- - PDF styling and generation via **fpdf**.
