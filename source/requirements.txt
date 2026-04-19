@@ -2,3 +2,4 @@
 
 flet
 fpdf
+requests
