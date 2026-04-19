@@ -1,0 +1,78 @@
+# --- PYTHON & VIRTUAL ENVS ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+.env
+.env/
+venv/
+.venv/
+
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- DATABASES ---
+# Evita filtrar datos sensibles en cualquier carpeta
+*.db
+*.sqlite3
+db/
+database/*.db
+backups/
+
+# --- DOCKER ---
+.dockerignore
+docker-stack.yml
+
+# --- FLET & BUILD OUTPUTS ---
+build/
+dist/
+release/
+pdfs/
+estimate/
+*.spec
+*.exe
+.flet_config.toml
+pyproject.toml
+
+# scripts de build
+build_app.bat
+*.bat
+
+# --- IDEs & SYSTEM ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- LOGS & TEMP ---
+*.log
+temp/
+
+# --- BACKUPS ---
+archive/
+*.zip
+
+# =========================================================
+# 🔥 IMPORTANT: IGNORE GENERATED FILES INSIDE /source
+# =========================================================
+
+source/__pycache__/
+source/**/*.pyc
+source/**/*.pyo
+
+source/build/
+source/dist/
+source/release/
+source/pdfs/
+source/estimate/
+
+source/*.db
+source/**/*.db
+
+source/.env
+source/venv/
+source/.venv/
+
+source/*.log
+source/temp/
