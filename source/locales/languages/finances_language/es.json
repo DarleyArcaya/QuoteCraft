@@ -1,0 +1,17 @@
+{
+    "title": "REPORTE FINANCIERO",
+    "fiscal_year": "Año fiscal:",
+    "company": "Empresa:",
+    "summary": "RESUMEN",
+    "total_income": "Total Ingresos:",
+    "total_expenses": "Total Gastos:",
+    "net_income": "Ingreso Neto:",
+    "deductions": "Posibles Deducciones:",
+    "income": "INGRESOS",
+    "expenses": "GASTOS / DEDUCCIONES",
+    "desc": "Descripción",
+    "date": "Fecha",
+    "amount": "Monto",
+    "footer": "Generado con QuoteCraft - solo para referencia, consulta a tu contador.",
+    "select_pdf_language": "Seleccione el idioma del PDF"
+}
