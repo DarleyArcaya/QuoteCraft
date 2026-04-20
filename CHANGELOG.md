@@ -1,5 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## [1.2.0] - 2026-04-20
+
+### Added
+- **Support for MacOs**: 
+- Now users can run QuoteCraft in MacOs and improved database initialization cross-platform
+
+## Old Versions
+
 ## [1.1.3] - 2026-04-19
 
 ### Added
@@ -8,7 +17,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fixed a bug that caused the app does not save the logo company
 
-## Old Version
 ## [1.1.0] - 2026-04-18
 
 ### Added
