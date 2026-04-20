@@ -1,6 +1,14 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
+## [1.1.2] - 2026-04-19
+
+### Added
+- **Banner update checker**: The app now checks for updates in the background and displays an update banner if a newer version is available.
+
+
+
+
+## Old Version
 ## [1.1.0] - 2026-04-18
 
 ### Added
@@ -12,9 +20,6 @@ All notable changes to this project will be documented in this file.
 - Fixed a bug that caused the app to crash
 - fixed a bug that do not let the app translate from english to spanish correctly.
 - In Settings / Company Names field, the word "Admin" will no longer appear for new users; the field will appear empty.
-
-## Old Version
-
 
 ## [1.0.3] - 2026-04-11
 
