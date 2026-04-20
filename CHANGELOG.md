@@ -1,12 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
-## [1.1.2] - 2026-04-19
+## [1.1.3] - 2026-04-19
 
 ### Added
 - **Banner update checker**: The app now checks for updates in the background and displays an update banner if a newer version is available.
 
-
-
+### Fixed
+- Fixed a bug that caused the app does not save the logo company
 
 ## Old Version
 ## [1.1.0] - 2026-04-18
