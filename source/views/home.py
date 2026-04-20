@@ -3,11 +3,25 @@ from database import queries
 from views.estimate_form import EstimateForm
 from services.estimate_pdf import generate_pdf
 import webbrowser
+import os
+import sys
+import subprocess
 from views.finances import FinancesView
 from views.settings import SettingsView
 from views.clients import ClientsView
 from views.calendar_view import CalendarView
 from utils.theme import get_theme
+
+# [CHANGE] Cross-platform file opener function — replaces os.startfile which is Windows-only.
+# Windows → os.startfile | macOS → open | Linux → xdg-open
+# [CAMBIO] Función multiplataforma para abrir archivos — reemplaza os.startfile que es solo de Windows.
+def open_file_cross_platform(path):
+    if sys.platform == "win32":
+        os.startfile(path)
+    elif sys.platform == "darwin":
+        subprocess.run(["open", path])
+    else:
+        subprocess.run(["xdg-open", path])
 
 def HomeView(page: ft.Page):
     # Load visual theme and internationalization (i18n) | Carga de tema visual e internacionalización (i18n)
@@ -87,35 +101,18 @@ def HomeView(page: ft.Page):
             border=ft.border.only(bottom=ft.BorderSide(1, t["border"])),
         )
 
-    # ─────────────────────────────────────────────────────────────────
-    # [CHANGE] UPDATE BANNER — shown below the topbar when a newer
-    # version is detected by check_for_updates() in main.py.
-    # Reads page.data["update_available"] set by the background thread.
-    # Clicking "Descargar" opens the Mega download link in the browser.
-    # Clicking "✕" dismisses the banner for the current session only.
-    #
-    # [CAMBIO] BANNER DE ACTUALIZACIÓN — se muestra debajo del topbar
-    # cuando check_for_updates() en main.py detecta una versión más nueva.
-    # Lee page.data["update_available"] establecido por el hilo en segundo plano.
-    # Hacer click en "Descargar" abre el link de Mega en el navegador.
-    # Hacer click en "✕" descarta el banner solo para la sesión actual.
-    # ─────────────────────────────────────────────────────────────────
     def build_update_banner():
         if not page.data.get("update_available"):
-            return ft.Container(visible=False)  # No banner needed | No se necesita banner
+            return ft.Container(visible=False)
 
         version      = page.data.get("update_version", "")
         download_url = page.data.get("update_url", "")
-
-        # Banner container reference for dismiss | Referencia al contenedor del banner para descartarlo
-        banner_ref = ft.Ref[ft.Container]()
+        banner_ref   = ft.Ref[ft.Container]()
 
         def open_download(e):
             webbrowser.open(download_url)
 
         def dismiss_banner(e):
-            # Hide banner for this session — does not change page.data
-            # Ocultar banner para esta sesión — no cambia page.data
             banner_ref.current.visible = False
             banner_ref.current.update()
 
@@ -146,7 +143,7 @@ def HomeView(page: ft.Page):
                 ],
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
             ),
-            bgcolor="#f0a500",  # QuoteCraft orange | Naranja QuoteCraft
+            bgcolor="#f0a500",
             padding=ft.padding.symmetric(horizontal=16, vertical=8),
             visible=True,
         )
@@ -177,7 +174,6 @@ def HomeView(page: ft.Page):
             page.add(HomeView(page))
             page.update()
 
-        # Confirmation dialog to archive/delete estimate | Diálogo de confirmación para archivar/eliminar presupuesto
         def confirm_delete(e):
             confirm_field = ft.TextField(
                 hint_text=i18n.t("DELETE_WORD"),
@@ -213,18 +209,16 @@ def HomeView(page: ft.Page):
                 ],
             )
             page.overlay.append(dlg_confirm)
-            confirm_field.focus()  # Focus for better UX | Enfoque para mejor UX
+            confirm_field.focus()
             dlg_confirm.open = True
             page.update()
 
-        # Status change management and auto-income flow | Gestión del cambio de estado y flujo de ingresos automáticos
         def change_status(e):
             def set_status(status):
                 dlg.open = False
                 page.update()
                 queries.update_estimate_status(estimate["id"], status)
 
-                # If accepted, offer to record amount in Finances | Si se acepta, ofrece registrar el monto en Finanzas
                 if status == "accepted":
                     def add_to_income(e):
                         title_text = str(estimate["title"] or estimate["description"] or i18n.t("no_title"))
@@ -274,15 +268,15 @@ def HomeView(page: ft.Page):
             dlg.open = True
             page.update()
 
-        # Share menu: Local PDF or WhatsApp | Menú para compartir: PDF local o WhatsApp
         def open_estimate(e):
             path = generate_pdf(estimate["id"])
 
             def open_pdf_file(e):
                 dlg.open = False
                 page.update()
-                import os
-                os.startfile(path)
+                # [CHANGE] Replaced os.startfile with cross-platform opener
+                # [CAMBIO] Reemplazado os.startfile con abridor multiplataforma
+                open_file_cross_platform(path)
 
             def send_whatsapp(e):
                 dlg.open = False
@@ -312,7 +306,6 @@ def HomeView(page: ft.Page):
             dlg.open = True
             page.update()
 
-        # Estimate card layout | Layout de la tarjeta de presupuesto
         return ft.Container(
             content=ft.Row(
                 controls=[
@@ -326,7 +319,6 @@ def HomeView(page: ft.Page):
                         spacing=4,
                         expand=True,
                     ),
-                    # Quick edit action | Acción de edición rápida
                     ft.Container(
                         content=ft.Text(i18n.t("edit"), size=11, color=t["accent"], weight=ft.FontWeight.W_600),
                         bgcolor=f"{t['accent']}20",
@@ -339,7 +331,6 @@ def HomeView(page: ft.Page):
                         ),
                         ink=True,
                     ),
-                    # Interactive status badge | Badge interactivo de estado
                     ft.Container(
                         content=ft.Text(label, size=11, color=color, weight=ft.FontWeight.W_600),
                         bgcolor=f"{color}20",
@@ -372,7 +363,6 @@ def HomeView(page: ft.Page):
             ink=True,
         )
 
-    # Initialize estimates list and search bar | Inicialización de la lista de presupuestos y barra de búsqueda
     initial_estimates = get_filtered_estimates()
     estimates_list = ft.Column(
         controls=[estimate_card(e) for e in initial_estimates],
@@ -397,11 +387,9 @@ def HomeView(page: ft.Page):
         on_change=on_search,
     )
 
-    # Main body of the view | Cuerpo principal de la vista
     def build_body():
         all_estimates = queries.get_all_estimates()
 
-        # Empty state view if no records | Vista de estado vacío si no hay registros
         if not all_estimates:
             return ft.Container(
                 content=ft.Column(
@@ -417,7 +405,6 @@ def HomeView(page: ft.Page):
                 expand=True,
             )
 
-        # Container with search and dynamic list | Contenedor con búsqueda y listado dinámico
         return ft.Container(
             content=ft.Column(
                 controls=[
@@ -430,11 +417,6 @@ def HomeView(page: ft.Page):
             expand=True,
         )
 
-    # [CHANGE] Final page structure now includes the update banner between
-    # the topbar and the body. The banner is invisible when no update exists.
-    # [CAMBIO] La estructura final de la página ahora incluye el banner de
-    # actualización entre el topbar y el body. El banner es invisible cuando
-    # no hay actualización disponible.
     return ft.Column(
         controls=[
             build_topbar(),

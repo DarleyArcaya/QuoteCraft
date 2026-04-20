@@ -8,14 +8,35 @@ import os
 # Reference to the project root (used in development) | Referencia a la raíz del proyecto (usada en desarrollo)
 _dev_path = pl.Path(__file__).resolve().parent.parent
 
-# Persistent data directory in AppData | Directorio de datos persistente en AppData
-_appdata_dir = pl.Path(os.environ["APPDATA"]) / "QuoteCraft"
+# [CHANGE] Cross-platform persistent data directory.
+# Windows → %APPDATA%\QuoteCraft
+# macOS   → ~/Library/Application Support/QuoteCraft
+# Linux   → ~/.local/share/QuoteCraft
+#
+# [CAMBIO] Directorio de datos persistente multiplataforma.
+# Windows → %APPDATA%\QuoteCraft
+# macOS   → ~/Library/Application Support/QuoteCraft
+# Linux   → ~/.local/share/QuoteCraft
+if sys.platform == "win32":
+    _appdata_dir = pl.Path(os.environ["APPDATA"]) / "QuoteCraft"
+elif sys.platform == "darwin":
+    _appdata_dir = pl.Path.home() / "Library" / "Application Support" / "QuoteCraft"
+else:
+    _appdata_dir = pl.Path.home() / ".local" / "share" / "QuoteCraft"
 
-# Detect if running from flet build extracted app in AppData
-# Detecta si se ejecuta desde la app extraída por flet build en AppData
-_is_flet_build = str(_dev_path).lower().startswith(os.environ["APPDATA"].lower())
+# [CHANGE] _is_flet_build detection made cross-platform.
+# On Windows, check if path starts with APPDATA.
+# On macOS/Linux, flet build uses different paths — default to False in development.
+#
+# [CAMBIO] Detección de _is_flet_build hecha multiplataforma.
+# En Windows, verifica si la ruta empieza con APPDATA.
+# En macOS/Linux, flet build usa rutas diferentes — por defecto False en desarrollo.
+if sys.platform == "win32":
+    _is_flet_build = str(_dev_path).lower().startswith(os.environ.get("APPDATA", "").lower())
+else:
+    _is_flet_build = False
 
-# If PyInstaller .exe, flet build, or any AppData execution → use persistent AppData folder
+# If PyInstaller .exe, flet build, or any AppData execution → use persistent data folder
 # Si es .exe de PyInstaller, flet build, o cualquier ejecución desde AppData → usar carpeta persistente
 if getattr(sys, 'frozen', False) or _is_flet_build:
     BASE_DIR = _appdata_dir
@@ -148,7 +169,7 @@ def create_tables():
     except: pass
     try: conn.execute("ALTER TABLE users ADD COLUMN lang TEXT DEFAULT 'es'")
     except: pass
-    try: conn.execute("ALTER TABLE users ADD COLUMN logo_path TEXT") # Add logo_path to users | Añade logo_path a users
+    try: conn.execute("ALTER TABLE users ADD COLUMN logo_path TEXT")
     except: pass
     try: conn.execute("ALTER TABLE events ADD COLUMN time TEXT DEFAULT ''")
     except: pass

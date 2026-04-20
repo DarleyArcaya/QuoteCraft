@@ -4,6 +4,19 @@ from datetime import datetime
 from services.finance_pdf import generate_finance_pdf
 from utils.theme import get_theme
 import os
+import sys
+import subprocess
+
+# [CHANGE] Cross-platform file opener — replaces os.startfile which is Windows-only.
+# Windows → os.startfile | macOS → open | Linux → xdg-open
+# [CAMBIO] Abridor de archivos multiplataforma — reemplaza os.startfile que es solo de Windows.
+def open_file_cross_platform(path):
+    if sys.platform == "win32":
+        os.startfile(path)
+    elif sys.platform == "darwin":
+        subprocess.run(["open", path])
+    else:
+        subprocess.run(["xdg-open", path])
 
 def FinancesView(page: ft.Page):
     # Load theme and internationalization data
@@ -262,7 +275,7 @@ def FinancesView(page: ft.Page):
                 ft.Text(i18n.t("materials_services_section"), size=11, color=t["text2"], weight=ft.FontWeight.W_600),
                 ft.Row(controls=[
                     ft.Text(i18n.t("table_desc"), size=11, color=t["text3"], expand=True),
-                    ft.Text(i18n.t("table_amount"), size=11, color=t["text3"], width=80),
+                    ft.Text(i18n.t("table_amount") if "table_amount" in (i18n.translations.get(i18n.lang, {})) else "Amount", size=11, color=t["text3"], width=80),
                     ft.Container(width=36),
                 ]),
                 items_column,
@@ -294,7 +307,9 @@ def FinancesView(page: ft.Page):
             page.update()
             path = generate_finance_pdf(state["year"], lang_code)
             if path:
-                os.startfile(path)
+                # [CHANGE] Replaced os.startfile with cross-platform opener
+                # [CAMBIO] Reemplazado os.startfile con abridor multiplataforma
+                open_file_cross_platform(path)
 
         prompt_text = i18n.t("select_pdf_language")
         
