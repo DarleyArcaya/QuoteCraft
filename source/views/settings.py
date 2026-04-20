@@ -45,7 +45,10 @@ def SettingsView(page: ft.Page):
 
     # [CHANGE] Save button moved to topbar — same style as the rest of the app's action buttons
     # [CAMBIO] Botón de guardar movido al topbar — mismo estilo que los demás botones de acción de la app
+    # [CHANGE] Read current logo_path from DB before saving so it's never overwritten
+# [CAMBIO] Leer logo_path actual de la DB antes de guardar para que nunca se sobreescriba
     def save_company(e):
+        current_logo = queries.get_logo_path()  # preserve existing logo | preservar logo existente
         queries.save_user(
             name=company_name.value,
             phone=company_phone.value,
@@ -53,6 +56,7 @@ def SettingsView(page: ft.Page):
             address=company_address.value,
             estimate_prefix=estimate_prefix.value or "EST",
             theme=page.data["theme"],
+            logo_path=current_logo,  # pass it back so it's not lost | pasarlo para que no se pierda
         )
         snack = ft.SnackBar(content=ft.Text(i18n.t("save_data"), color="white"), bgcolor="#22c97a", duration=2000)
         page.overlay.append(snack)
