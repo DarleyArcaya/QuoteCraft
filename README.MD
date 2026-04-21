@@ -58,9 +58,9 @@
 
 ---
 
-## ⚙️ Installation
+## Installation
 
-### 🚀 Quick Start
+### Quick Start
 
 Clone the repository and install dependencies depending on your operating system.
 
