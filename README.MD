@@ -58,6 +58,73 @@
 
 ---
 
+## ⚙️ Installation
+
+### 🚀 Quick Start
+
+Clone the repository and install dependencies depending on your operating system.
+
+---
+
+### Windows
+
+```bash
+
+# Clone the repository
+git clone https://github.com/DarleyArcaya/QuoteCraft.git
+
+# Enter project folder
+cd QuoteCraft
+
+# Create virtual environment (recommended)
+python -m venv venv
+venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+``` 
+### MacOS
+
+```bash
+# Clone the repository
+git clone https://github.com/DarleyArcaya/QuoteCraft.git
+
+# Enter project folder
+cd QuoteCraft
+
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip3 install -r requirements.txt
+
+```
+
+### Linux
+# Linux support note
+
+### The application is NOT fully configured for Linux yet.
+### The issue is related to the local database path not being automatically created on Linux systems. This will be fixed in a future update.
+```bash
+# Clone the repository
+git clone https://github.com/DarleyArcaya/QuoteCraft.git
+
+# Enter project folder
+cd QuoteCraft
+
+# Create virtual environment (recommended)
+python3 -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Install dependencies
+pip3 install -r requirements.txt
+
+```
+
 ## Project Structure
 
 All source code is inside the `/source` directory:
